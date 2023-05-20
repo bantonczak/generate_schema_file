@@ -25,13 +25,12 @@ rm(list=ls())
 #  install/load required packages 
 
 if (!require("data.table")) install.packages("data.table")
-if (!require("dplyr")) install.packages("dplyr")
 if (!require("rstudioapi")) install.packages("rstudioapi")
 
 
 # set working directory to source file location for portability of code
 
-wd <- setwd(dirname(getActiveDocumentContext()$path))  
+wd <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))  
 
 
 # ----- LOAD FUNCTION ----- 
@@ -47,6 +46,7 @@ source(paste0(wd,"//dependencies/generate_schema_function.R"))
 
 in_dir = paste0(wd,"//input")
 in_csv = "2020_acs5_us_county_median_hh_income.csv"
+
 
 # set output directory path
 
