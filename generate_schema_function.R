@@ -40,20 +40,20 @@
 generate.schema.ini <- function(data, file_name, out_dir){
   
   # install/load required packages 
-  if(!require("stringr")) install.packages("stringr")
+  if(!require("dplyr")) install.packages("dplyr")
   
   # build schema information table
   schema_table <- data.frame(id = 1:length(names(data)), 
                              field_name = names(data), 
                              class = sapply(data, class), 
                              row.names = NULL) %>% 
-    mutate(type = 
-             case_when(class == "character" ~ "Text",
-                       grepl("GEOID", field_name, ignore.case = TRUE) ~ "Text", 
-                       grepl("FID", field_name, ignore.case = TRUE) ~ "Long",
-                       TRUE ~ "Double")) %>%
+    dplyr::mutate(type = 
+             dplyr::case_when(class == "character" ~ "Text",
+                              grepl("GEOID", field_name, ignore.case = TRUE) ~ "Text", 
+                              grepl("FID", field_name, ignore.case = TRUE) ~ "Long",
+                              TRUE ~ "Double")) %>%
     rowwise() %>%
-    mutate(schema = paste0("Col",id,"=",field_name," ",type))
+    dplyr::mutate(schema = paste0("Col",id,"=",field_name," ",type))
   
   # write schema information file to the defined output directory 
   writeLines(
